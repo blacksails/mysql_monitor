@@ -1,4 +1,5 @@
 require 'mysql2'
+require 'optparse'
 
 class MysqlMonitor
   def initialize
@@ -29,6 +30,29 @@ class MysqlMonitor
     Mysql2::Client.new(host: 'localhost',
                        username: Settings.mysql_user,
                        password: Settings.mysql_pass)
+  end
+
+  def handle_arguments
+    o = OptionParser.new do |opts|
+      opts.banner = 'Usage: mysql_monitor.rb [options]'
+      opts.on_tail('-h', '--help', 'Show this message.') do
+        puts opts
+        exit
+      end
+      opts.on('-s', '--slave-running',
+              'Answers YES and noError(0) if slave is running else NO and error(1)') { handle_s_flag }
+    end
+    begin o.parse!
+    rescue OptionParser::InvalidOption => e
+      puts e
+      puts o
+      exit 1
+    end
+  end
+
+  def handle_s_flag
+    res = @con.query("SHOW GLOBAL STATUS LIKE 'slave_running'")
+    puts res
   end
 end
 
