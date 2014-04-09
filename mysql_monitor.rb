@@ -53,7 +53,9 @@ class MysqlMonitor
 
   def handle_s_flag
     res = @con.query("SHOW GLOBAL STATUS LIKE 'slave_running'")
-    puts res
+    res.each do |line|
+      puts line
+    end
   end
 end
 
