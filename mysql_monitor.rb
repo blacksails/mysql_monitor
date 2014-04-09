@@ -1,5 +1,6 @@
 require 'mysql2'
 require 'optparse'
+require_relative 'settings'
 
 class MysqlMonitor
   def initialize
