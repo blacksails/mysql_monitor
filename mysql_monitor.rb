@@ -56,11 +56,10 @@ class MysqlMonitor
       val = row[:Value]
       puts val
       @con.close
-      if val.equal? 'NO'
+      if val.equal? 'OFF'
         exit 1
-      else
-        exit
       end
+      exit
     end
   end
 end
