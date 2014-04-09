@@ -10,6 +10,7 @@ class MysqlMonitor
     load_config
     @con = db_connection
     handle_arguments
+    complain
   end
 
   def check_if_root
@@ -61,6 +62,12 @@ class MysqlMonitor
       end
       exit
     end
+  end
+
+  def complain
+    puts 'You have to specify an argument!'
+    puts 'To see available options run mysql_monitor.rb -h'
+    exit 1
   end
 end
 
