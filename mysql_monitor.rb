@@ -52,9 +52,15 @@ class MysqlMonitor
   end
 
   def handle_s_flag
-    res = @con.query("SHOW GLOBAL STATUS LIKE 'slave_running'")
-    res.each do |line|
-      puts line
+    @con.query("SHOW GLOBAL STATUS LIKE 'slave_running'", symbolize_keys: true).each do |row|
+      val = row[:Value]
+      puts val
+      @con.close
+      if val.equal? 'NO'
+        exit 1
+      else
+        exit
+      end
     end
   end
 end
