@@ -15,7 +15,7 @@ class MysqlMonitor
   end
 
   def check_if_root
-    if ENV['USER'] != 'root'
+    if Process.uid != 0
       puts 'You need root privileges to run this script'
       exit 1
     end
