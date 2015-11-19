@@ -15,7 +15,7 @@ class MysqlMonitor
   end
 
   def check_if_root
-    if ['root','snmp'].include? ENV['USER']
+    if ENV['USER'] != "root"
       puts 'You need root privileges to run this script'
       exit 1
     end
