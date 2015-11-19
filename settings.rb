@@ -13,9 +13,12 @@ module Settings
     mysql_user = gets.chomp
     printf 'Enter MySQL password: '
     mysql_pass = STDIN.noecho(&:gets).chomp; puts
+    printf 'Enter MySQL socket path: '
+    mysql_socket = gets.chomp
     settings = {
         mysql_user: mysql_user,
-        mysql_pass: mysql_pass
+        mysql_pass: mysql_pass,
+        mysql_socket: mysql_socket
     }
     f = File.new(File.dirname(__FILE__)+'/config.yml', 'w')
     f.chown(-1,0)

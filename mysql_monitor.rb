@@ -31,6 +31,7 @@ class MysqlMonitor
 
   def db_connection
     Mysql2::Client.new(host: 'localhost',
+                       socket: Settings.mysql_socket,
                        username: Settings.mysql_user,
                        password: Settings.mysql_pass)
   end
