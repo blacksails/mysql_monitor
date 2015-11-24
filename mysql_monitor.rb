@@ -46,7 +46,7 @@ class MysqlMonitor
       opts.on('-s', '--slave-running',
               'Answers YES and noError(0) if slave is running else NO and error(1)') { handle_s_flag }
       opts.on('-d', '--slave-running',
-              'Answers Seconds_Behind_Master') { handle_d_flag }
+              'Answers Seconds_Behind_Master. Exit-code in logarithmic scale.') { handle_d_flag }
     end
     begin o.parse!
     rescue OptionParser::InvalidOption => e
@@ -71,9 +71,10 @@ class MysqlMonitor
   def handle_d_flag
     @con.query("SHOW SLAVE STATUS", symbolize_keys: true).each do |row|
       val = row[:Seconds_Behind_Master]
-      puts val
       @con.close
-      exit
+      puts val
+      logarithm = Math::log10(val).round
+      logarithm <= 255 ? exit(logarithm) : exit(255)
     end
   end
 
