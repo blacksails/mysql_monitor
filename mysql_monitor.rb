@@ -73,8 +73,12 @@ class MysqlMonitor
       val = row[:Seconds_Behind_Master]
       @con.close
       puts val
-      logarithm = Math::log10(val).round
-      logarithm <= 255 ? exit(logarithm) : exit(255)
+      if val != 0
+        res = Math::log10(val).round
+      else
+        res = 0
+      end
+      res <= 255 ? exit(res) : exit(255)
     end
   end
 
