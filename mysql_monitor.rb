@@ -72,11 +72,13 @@ class MysqlMonitor
     @con.query("SHOW SLAVE STATUS", symbolize_keys: true).each do |row|
       val = row[:Seconds_Behind_Master]
       @con.close
-      puts val
-      if val != 0
-        res = Math::log10(val).round
-      else
+      val ? puts(val) : puts(-1)
+      if val == 0
         res = 0
+      elsif val == nil
+        res = 256
+      else
+        res = Math::log10(val).round
       end
       res <= 255 ? exit(res) : exit(255)
     end
