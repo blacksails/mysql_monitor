@@ -44,7 +44,7 @@ class MysqlMonitor
         exit
       end
       opts.on('-s', '--slave-running',
-              'Answers yes and noError(0) if slave is running else no and error(1)') { handle_s_flag }
+              'Shows if the slave is running') { handle_s_flag }
       opts.on('-d', '--seconds-behind',
               'Answers Seconds_Behind_Master. Exit-code in logarithmic scale.') { handle_d_flag }
     end
@@ -57,15 +57,17 @@ class MysqlMonitor
   end
 
   def handle_s_flag
-    @con.query("SHOW GLOBAL STATUS LIKE 'slave_running'", symbolize_keys: true).each do |row|
-      val = row[:Value]
-      puts val
-      @con.close
-      if val.eql? 'OFF'
+    @con.query("SHOW SLAVE STATUS;", symbolize_keys: true).each do |row|
+      io = row[:Slave_IO_Running]
+      sql = row[:Slave_SQL_Running]
+      puts "IO: #{io}, SQL: #{sql}"
+      if io.eql?('No') || sql.eql?('No')
+        @con.close
         exit 1
       end
-      exit
     end
+    @con.close
+    exit
   end
 
   def handle_d_flag
