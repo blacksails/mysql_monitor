@@ -45,7 +45,7 @@ class MysqlMonitor
       end
       opts.on('-s', '--slave-running',
               'Answers YES and noError(0) if slave is running else NO and error(1)') { handle_s_flag }
-      opts.on('-d', '--slave-running',
+      opts.on('-d', '--seconds-behind',
               'Answers Seconds_Behind_Master. Exit-code in logarithmic scale.') { handle_d_flag }
     end
     begin o.parse!
