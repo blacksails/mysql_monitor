@@ -38,13 +38,13 @@ class MysqlMonitor
 
   def handle_arguments
     o = OptionParser.new do |opts|
-      opts.banner = 'Usage: mysql_monitor.rb [options]'
+      opts.banner = 'Usage: rvmsudo mysql_monitor.rb [options]'
       opts.on_tail('-h', '--help', 'Show this message.') do
         puts opts
         exit
       end
       opts.on('-s', '--slave-running',
-              'Answers YES and noError(0) if slave is running else NO and error(1)') { handle_s_flag }
+              'Answers yes and noError(0) if slave is running else no and error(1)') { handle_s_flag }
       opts.on('-d', '--seconds-behind',
               'Answers Seconds_Behind_Master. Exit-code in logarithmic scale.') { handle_d_flag }
     end
